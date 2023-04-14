@@ -146,7 +146,7 @@ class _UserLoginState extends State<UserLogin> {
                       ],
                     ),
                     child: const Text(
-                      'SignIn',
+                      'Login',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 25,
@@ -159,7 +159,7 @@ class _UserLoginState extends State<UserLogin> {
                 TextFormField(
                   controller: _usernameController,
                   decoration: InputDecoration(
-                    labelText: "Username",
+                    labelText: "User Id",
                     fillColor: Colors.white60,
                     filled: true,
                     hintText: hintText,
@@ -224,17 +224,14 @@ class _UserLoginState extends State<UserLogin> {
                       backgroundColor: Colors.black,
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.red))
                 else
-                  ElevatedButton(
-                      // onPressed: () {
-                      //   await Provider.of<UserAuthentication>(context,
-                      //           listen: false)
-                      //       .userSignIn2(
-                      //           'mohanaveluk@gmail.com', 'welcome@123', context);
-                      // },
-                      onPressed: () async {
-                        _submit(context);
-                      },
-                      child: const Text("Submit")),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: ElevatedButton(
+                        onPressed: () async {
+                          _submit(context);
+                        },
+                        child: const Text("Submit")),
+                  ),
                 const SizedBox(
                   height: 30,
                 ),
@@ -310,7 +307,7 @@ class AuthWindow extends StatelessWidget {
             TextFormField(
               controller: _usernameController,
               decoration: const InputDecoration(
-                labelText: "Username",
+                labelText: "User Id",
                 // enabledBorder: OutlineInputBorder(
                 //   borderSide: BorderSide(color: Colors.orange.shade700),
                 // ),
