@@ -44,6 +44,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.of(context).size;
     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
     var passwordController;
     return Scaffold(
@@ -53,212 +54,232 @@ class _LoginPageState extends State<LoginPage> {
         elevation: 0,
         backgroundColor: Colors.grey.shade200,
         title: const Text(
-          "Enter Your Details",
+          "Snackchat",
           style: TextStyle(
             color: Colors.orange,
-            fontSize: 22,
+            fontSize: 25,
             fontWeight: FontWeight.w800,
           ),
         ),
         centerTitle: true,
       ),
-      body: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-        elevation: 8.0,
-        child: Container(
-          padding: EdgeInsets.only(left: 20, right: 40),
-          child: Form(
-            key: _form,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 30,
-                ),
-                /* textfield(
-               controller: usernameController,
-               hintText: 'Name',
-               obscureText: false,
-             ),
-            */
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: "Name",
-                    // enabledBorder: OutlineInputBorder( borderSide: BorderSide(color: Colors.orange.shade700), ),
-                    //focusedBorder: OutlineInputBorder(
-                    // borderSide: BorderSide(
-                    //  color: Colors.white,
-                    // ),),
-                    fillColor: Colors.white60,
-                    filled: true,
-                    hintText: hintText,
-                    hintStyle: TextStyle(color: Color.fromARGB(255, 14, 3, 3)),
+      body: SingleChildScrollView(
+        child: Card(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+          elevation: 8.0,
+          child: Container(
+            padding: EdgeInsets.only(left: 20, right: 40),
+            height: deviceSize.height - 100,
+            child: Form(
+              key: _form,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 20,
                   ),
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.name,
-                  focusNode: _nameFocusNode,
-                  onFieldSubmitted: (_) {
-                    FocusScope.of(context).requestFocus(_numberFocusNode);
-                  },
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please provide a value.";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                /*textfield(
-                controller: usernameController,
-                hintText: 'Phone Number',
-                obscureText: false,
-      
-              ),*/
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: "Mobile Number",
-                    //enabledBorder: OutlineInputBorder(
-                    // borderSide: BorderSide(color: Colors.orange.shade700),
-                    // ),
-                    //focusedBorder: OutlineInputBorder(
-                    // borderSide: BorderSide(
-                    //  color: Colors.white,
-                    //  ),
-                    //  ),
-                    fillColor: Colors.white60,
-                    filled: true,
-                    hintText: hintText,
-                    hintStyle: TextStyle(color: Colors.grey.shade500),
+                  const Text(
+                    'Create Account',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontFamily: 'Anton',
+                        color: Colors.orange,
+                        fontWeight: FontWeight.w900),
                   ),
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.number,
-                  focusNode: _numberFocusNode,
-                  onFieldSubmitted: (_) {
-                    FocusScope.of(context).requestFocus(_emailFocusNode);
-                  },
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please provide a value.";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                /* textfield(
-                controller: usernameController,
-                hintText: 'Email ID',
-                obscureText: false,
-              ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  /* textfield(
+                 controller: usernameController,
+                 hintText: 'Name',
+                 obscureText: false,
+               ),
               */
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: "Email",
-                    //  enabledBorder: OutlineInputBorder(
-                    //  borderSide: BorderSide(color: Colors.orange.shade700),
-                    // ),
-                    //  focusedBorder: OutlineInputBorder(
-                    //   borderSide: BorderSide(
-                    //    color: Colors.white,
-                    //  ),
-                    // ),
-                    fillColor: Colors.white60,
-                    filled: true,
-                    hintText: hintText,
-                    hintStyle: TextStyle(color: Colors.grey.shade500),
-                  ),
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.emailAddress,
-                  focusNode: _emailFocusNode,
-                  onFieldSubmitted: (_) {
-                    FocusScope.of(context).requestFocus(_passwordFocusNode);
-                  },
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please provide a value.";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                /*textfield(
-                controller: passwordController,
-                hintText: 'Password',
-                obscureText: true,
-              ),*/
-
-                TextFormField(
-                  controller: passwordController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: "Password",
-                    //  enabledBorder: OutlineInputBorder(
-                    //   borderSide: BorderSide(color: Colors.orange.shade700),
-                    // ),
-                    // focusedBorder: OutlineInputBorder(
-                    //   borderSide: BorderSide(
-                    //     color: Colors.white,
-                    //  ),
-                    // ),
-                    fillColor: Colors.white60,
-                    filled: true,
-                    hintText: hintText,
-                    hintStyle: TextStyle(color: Colors.grey.shade500),
-                  ),
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.multiline,
-                  focusNode: _passwordFocusNode,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please provide a valid password.";
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 35,
-                ),
-                ElevatedButton(
-                    // onPressed: () {
-                    //   await Provider.of<UserAuthentication>(context,
-                    //           listen: false)
-                    //       .userSignIn2(
-                    //           'mohanaveluk@gmail.com', 'welcome@123', context);
-                    // },
-                    onPressed: _saveForm,
-                    child: const Text("Sign In")),
-                SizedBox(
-                  height: 40,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Already Having Account?",
-                      style: TextStyle(fontWeight: FontWeight.w600),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: "Name",
+                      // enabledBorder: OutlineInputBorder( borderSide: BorderSide(color: Colors.orange.shade700), ),
+                      //focusedBorder: OutlineInputBorder(
+                      // borderSide: BorderSide(
+                      //  color: Colors.white,
+                      // ),),
+                      fillColor: Colors.white60,
+                      filled: true,
+                      hintText: hintText,
+                      hintStyle:
+                          TextStyle(color: Color.fromARGB(255, 14, 3, 3)),
                     ),
-                    const SizedBox(width: 5),
-                    InkWell(
-                      child: Text(
-                        "LOG IN",
-                        style: TextStyle(
-                            color: Colors.blue, fontWeight: FontWeight.bold),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const UserLogin()));
-                      },
-                    )
-                  ],
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.name,
+                    focusNode: _nameFocusNode,
+                    onFieldSubmitted: (_) {
+                      FocusScope.of(context).requestFocus(_numberFocusNode);
+                    },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Please provide a value.";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  /*textfield(
+                  controller: usernameController,
+                  hintText: 'Phone Number',
+                  obscureText: false,
+        
+                ),*/
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: "Mobile Number",
+                      //enabledBorder: OutlineInputBorder(
+                      // borderSide: BorderSide(color: Colors.orange.shade700),
+                      // ),
+                      //focusedBorder: OutlineInputBorder(
+                      // borderSide: BorderSide(
+                      //  color: Colors.white,
+                      //  ),
+                      //  ),
+                      fillColor: Colors.white60,
+                      filled: true,
+                      hintText: hintText,
+                      hintStyle: TextStyle(color: Colors.grey.shade500),
+                    ),
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.number,
+                    focusNode: _numberFocusNode,
+                    onFieldSubmitted: (_) {
+                      FocusScope.of(context).requestFocus(_emailFocusNode);
+                    },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Please provide a value.";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  /* textfield(
+                  controller: usernameController,
+                  hintText: 'Email ID',
+                  obscureText: false,
                 ),
-              ],
+                */
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: "Email",
+                      //  enabledBorder: OutlineInputBorder(
+                      //  borderSide: BorderSide(color: Colors.orange.shade700),
+                      // ),
+                      //  focusedBorder: OutlineInputBorder(
+                      //   borderSide: BorderSide(
+                      //    color: Colors.white,
+                      //  ),
+                      // ),
+                      fillColor: Colors.white60,
+                      filled: true,
+                      hintText: hintText,
+                      hintStyle: TextStyle(color: Colors.grey.shade500),
+                    ),
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.emailAddress,
+                    focusNode: _emailFocusNode,
+                    onFieldSubmitted: (_) {
+                      FocusScope.of(context).requestFocus(_passwordFocusNode);
+                    },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Please provide a value.";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  /*textfield(
+                  controller: passwordController,
+                  hintText: 'Password',
+                  obscureText: true,
+                ),*/
+
+                  TextFormField(
+                    controller: passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: "Password",
+                      //  enabledBorder: OutlineInputBorder(
+                      //   borderSide: BorderSide(color: Colors.orange.shade700),
+                      // ),
+                      // focusedBorder: OutlineInputBorder(
+                      //   borderSide: BorderSide(
+                      //     color: Colors.white,
+                      //  ),
+                      // ),
+                      fillColor: Colors.white60,
+                      filled: true,
+                      hintText: hintText,
+                      hintStyle: TextStyle(color: Colors.grey.shade500),
+                    ),
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.multiline,
+                    focusNode: _passwordFocusNode,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Please provide a valid password.";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 35,
+                  ),
+                  ElevatedButton(
+                      // onPressed: () {
+                      //   await Provider.of<UserAuthentication>(context,
+                      //           listen: false)
+                      //       .userSignIn2(
+                      //           'mohanaveluk@gmail.com', 'welcome@123', context);
+                      // },
+                      onPressed: _saveForm,
+                      child: const Text("Sign In")),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Already Having Account?",
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(width: 5),
+                      InkWell(
+                        child: Text(
+                          "LOG IN",
+                          style: TextStyle(
+                              color: Colors.blue, fontWeight: FontWeight.bold),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const UserLogin()));
+                        },
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
