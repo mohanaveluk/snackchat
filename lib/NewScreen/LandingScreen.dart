@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snackchat/NewScreen/pagelogin.dart';
+import 'package:snackchat/Screens/loginScreen.dart';
 
 import 'LoginPage.dart';
 import 'userlogin.dart';
@@ -16,7 +17,7 @@ class LandingScreen extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: 50,
+              height: 90,
             ),
             Text(
               "Welcome To SnackChat",
@@ -27,7 +28,7 @@ class LandingScreen extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height / 80,
+              height: 60
             ),
             Image.asset(
               "assets/images/loglogo.png",
@@ -36,7 +37,7 @@ class LandingScreen extends StatelessWidget {
               width: 400,
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height / 80,
+              height: 70,
             ),
             Text(
               "Let's get started",
@@ -93,7 +94,7 @@ class LandingScreen extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const UserLogin()));
+                          builder: (context) => const LoginScreen()));
                 },
                 style: ButtonStyle(
                   foregroundColor: MaterialStateProperty.all(Colors.orange),

@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:snackchat/CustomUI/OwnMessageCard.dart';
-import 'package:snackchat/CustomUI/ReplyCard.dart';
 import '../providers/chat_detail.dart';
 import 'package:intl/intl.dart';
-
 import '../providers/http_exception.dart';
 import '../widgets/chat_detail_widget.dart';
 
@@ -18,6 +14,8 @@ class IndividualPage extends StatefulWidget {
 }
 
 class _IndividualPageState extends State<IndividualPage> {
+  TextEditingController _newController = TextEditingController();
+  FocusNode _existingFocusNode =  FocusNode();
   var chatRoom;
   var _isInit = true;
   var _isLoading = false;
@@ -100,11 +98,12 @@ class _IndividualPageState extends State<IndividualPage> {
     super.didChangeDependencies();
   }
 
-  Future<void> _sendMessage(value) async {
-    print(value);
+  Future<void> _sendMessage(value, ctx) async {
     try {
-      var response = await Provider.of<ChatDetail>(context, listen: false)
-          .sendMessage(value, chatRoom);
+      var response = await Provider.of<ChatDetail>(ctx, listen: false)
+          .sendMessage(value, chatRoom);  
+          _newController.clear();
+          FocusScope.of(ctx).requestFocus(_existingFocusNode);
     } on HttpException catch (e) {
       _showErrorDialog(e.message);
     } catch (e) {
@@ -116,7 +115,7 @@ class _IndividualPageState extends State<IndividualPage> {
     showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-              title: const Text('An error occured'),
+              title: const Text('An error occurred'),
               content: Text(message),
               actions: [
                 TextButton(
@@ -194,7 +193,6 @@ class _IndividualPageState extends State<IndividualPage> {
                 ),
               ),
               actions: [
-                IconButton(onPressed: () {}, icon: Icon(Icons.videocam)),
                 IconButton(onPressed: () {}, icon: Icon(Icons.call)),
                 PopupMenuButton<String>(onSelected: (value) {
                   print(5);
@@ -232,9 +230,9 @@ class _IndividualPageState extends State<IndividualPage> {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(25)),
                                   child: TextFormField(
-                                    focusNode: _focusNode,
+                                    controller: _newController,
+                                    focusNode: _existingFocusNode,
                                     textAlignVertical: TextAlignVertical.center,
-                                    controller: addMessageController,
                                     keyboardType: TextInputType.text,
                                     textInputAction: TextInputAction.done,
                                     maxLines: 4,
@@ -265,8 +263,10 @@ class _IndividualPageState extends State<IndividualPage> {
                                         children: [
                                           IconButton(
                                             icon: Icon(
-                                              Icons.attach_file,
+                                              Icons.photo_camera_back_rounded,
                                               color: Colors.orangeAccent,
+                                              size: 30,
+
                                             ),
                                             onPressed: () {
                                               showModalBottomSheet(
@@ -277,17 +277,15 @@ class _IndividualPageState extends State<IndividualPage> {
                                                       bottomSheet());
                                             },
                                           ),
-                                          IconButton(
-                                            icon: Icon(Icons.camera_alt,
-                                                color: Colors.orangeAccent),
-                                            onPressed: () {},
-                                          )
+                                        SizedBox(
+                                          width: 15,
+                                        ),
                                         ],
                                       ),
                                       contentPadding: EdgeInsets.all(5),
                                     ),
                                     onFieldSubmitted: (value) =>
-                                        _sendMessage(value),
+                                        _sendMessage(value, context),
                                   ))),
                           Padding(
                             padding: const EdgeInsets.only(
@@ -300,10 +298,13 @@ class _IndividualPageState extends State<IndividualPage> {
                               backgroundColor: Colors.orange,
                               child: IconButton(
                                 icon: Icon(
-                                  sendButton ? Icons.send : Icons.mic,
+                                  sendButton ? Icons.send : Icons.send,
                                   color: Colors.white,
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  _sendMessage(
+                                      _newController.value.text, context);
+                                },
                               ),
                             ),
                           ),
