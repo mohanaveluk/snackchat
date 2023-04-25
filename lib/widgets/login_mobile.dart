@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snackchat/NewScreen/userlogin.dart';
+import '../NewScreen/LoginPage.dart';
 import '../providers/http_exception.dart';
 import '../Screens/chat_home_screen.dart';
 import '../providers/userAuthentication.dart';
@@ -99,139 +100,196 @@ class _LoginMobileState extends State<LoginMobile> {
     final deviceSize = MediaQuery.of(context).size;
     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-    return Center(
+    return Container(    
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(30), 
+          padding: const EdgeInsets.only(top: 150), 
           child: Center(
-            child: SizedBox(
-              width: 300,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Welcome back',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontFamily: 'Anton',
-                      color: Colors.black,
+            child: Form(
+              key: _form,
+              child: SizedBox(
+                width: 300,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "SNACK CHAT",
+                          style: TextStyle(
+                            fontSize: 48,
+                            color: Color.fromARGB(226, 237, 109, 4),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Login to your account',
-                    style: TextStyle(
-                      fontSize: 23,
-                      fontFamily: 'Anton',
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 35),
-                  TextFormField(
-                    controller: _usernameController,
-                    decoration: InputDecoration(
-                      labelText: "Email",
-                      hintStyle:
-                          const TextStyle(color: Color.fromARGB(255, 14, 3, 3)),
-
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            width: 3,
-                            color: Color.fromARGB(255, 104, 102, 102)),
-                        borderRadius: BorderRadius.circular(7),
-                      ),
-                      // Set border for focused state
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            width: 3,
-                            color: Color.fromARGB(255, 32, 32, 32)),
-                        borderRadius: BorderRadius.circular(7),
+    SizedBox(
+      height: 30,
+    ),
+                    Text(
+                      'Welcomes you back',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontFamily: 'Anton',
+                        color: Colors.black,
                       ),
                     ),
-                    textInputAction: TextInputAction.next,
-                    keyboardType: TextInputType.emailAddress,
-                    focusNode: _nameFocusNode,
-                    onFieldSubmitted: (_) {
-                      FocusScope.of(context).requestFocus(_passwordFocusNode);
-                    },
-                    validator: (value) {
-                      if (value!.isEmpty ||
-                          (!value.contains('@') && !value.contains('.'))) {
-                        return "Invalid email";
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _authData['email'] = value!;
-                    },
-                  ),
-                  const SizedBox(height: 25),
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: "Password",
-                      hintStyle:
-                          const TextStyle(color: Color.fromARGB(255, 14, 3, 3)),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            width: 3,
-                            color: Color.fromARGB(255, 104, 102, 102)),
-                        borderRadius: BorderRadius.circular(7),
-                      ),
-                      // Set border for focused state
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            width: 3,
-                            color: Color.fromARGB(255, 24, 24, 24)),
-                        borderRadius: BorderRadius.circular(7),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Login to your account',
+                      style: TextStyle(
+                        fontSize: 23,
+                        fontFamily: 'Anton',
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
-                    textInputAction: TextInputAction.next,
-                    keyboardType: TextInputType.emailAddress,
-                    focusNode: _passwordFocusNode,
-                    onFieldSubmitted: (_) {
-                      FocusScope.of(context).requestFocus(_passwordFocusNode);
-                    },
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Please provide a value.";
-                      }
-                      if (value.length < 5) {
-                        return "Password is too short";
-                      }
-
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _authData['password'] = value!;
-                    },
-                  ),
-                  const SizedBox(height: 25),
-                  if (_isLoading)
-                    const CircularProgressIndicator(
-                        backgroundColor: Colors.black,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.red))
-                  else
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                            backgroundColor: Colors.orange,
-                            fixedSize:  Size.fromHeight(50),
-                            textStyle: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                            foregroundColor: Colors.white),
-                        onPressed: () async {
-                          _submit(context);
-                        },
-                        child: const Text('LOGIN'),
+                    const SizedBox(height: 35),
+                    TextFormField(
+                      controller: _usernameController,
+                      decoration: InputDecoration(
+                        labelText: "Email",
+                        hintStyle:
+                            const TextStyle(color: Color.fromARGB(255, 14, 3, 3)),
+            
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              width: 3,
+                              color: Color.fromARGB(255, 104, 102, 102)),
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                        // Set border for focused state
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              width: 3,
+                              color: Color.fromARGB(255, 32, 32, 32)),
+                          borderRadius: BorderRadius.circular(7),
+                        ),
                       ),
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.emailAddress,
+                      focusNode: _nameFocusNode,
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context).requestFocus(_passwordFocusNode);
+                      },
+                      validator: (value) {
+                        if (value!.isEmpty ||
+                            (!value.contains('@') && !value.contains('.'))) {
+                          return "Invalid email";
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _authData['email'] = value!;
+                      },
+                    ),
+                    const SizedBox(height: 25),
+                    TextFormField(
+                      controller: _passwordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        labelText: "Password",
+                        hintStyle:
+                            const TextStyle(color: Color.fromARGB(255, 14, 3, 3)),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              width: 3,
+                              color: Color.fromARGB(255, 104, 102, 102)),
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                        // Set border for focused state
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                              width: 3,
+                              color: Color.fromARGB(255, 24, 24, 24)),
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                      ),
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.emailAddress,
+                      focusNode: _passwordFocusNode,
+                      onFieldSubmitted: (_) {
+                        FocusScope.of(context).requestFocus(_passwordFocusNode);
+                      },
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Please provide a value.";
+                        }
+                        if (value.length < 5) {
+                          return "Password is too short";
+                        }
+            
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _authData['password'] = value!;
+                      },
+                    ),
+                    const SizedBox(height: 25),
+                    if (_isLoading)
+                      Container(
+                        padding: EdgeInsets.only(right: 130, left: 130),
+                        child: const CircularProgressIndicator(
+                            backgroundColor: Colors.black,
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                            
+                            ),
+                      )
+                    else
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(12, 5, 12, 5),
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                              backgroundColor: Colors.orange,
+                              fixedSize:  Size.fromHeight(50),
+                              textStyle: const TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                              foregroundColor: Colors.white),
+                          onPressed: () async {
+                            _submit(context);
+                          },
+                          child: const Text('LOGIN'),
+                        ), 
+                      ),
+                      const SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "    New User ?",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    InkWell(
+                      child: const Text(
+                        "Create an Account.",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage()));
+                      },
                     )
-                ],
+                  ],
+                ),
+                  ],
+                ),
               ),
+              
             ),
           ),
         ),
@@ -295,4 +353,6 @@ class AuthWindow extends StatelessWidget {
     );
   }
 }
+
+
 

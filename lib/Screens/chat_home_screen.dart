@@ -55,6 +55,13 @@ class _ChatHomeState extends State<ChatHome> {
       appBar: AppBar(
         title: Text("SnackChat"),
         automaticallyImplyLeading: false,
+        actions: [
+          PopupMenuButton<String>(itemBuilder:(BuildContext context){
+            return[
+              const PopupMenuItem(child: Text("Log out"))
+            ];
+          }),
+        ],
       ),
       body: _isLoading
           ? const Center(
@@ -63,6 +70,7 @@ class _ChatHomeState extends State<ChatHome> {
           : ListView.builder(
               itemCount: rooms.length,
               itemBuilder: (ctx, i) => ChatItem(rooms[i])),
+              
 
               
     );

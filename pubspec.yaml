@@ -43,6 +43,8 @@ dependencies:
   uuid: ^3.0.7
   flutter_secure_storage: ^8.0.0
 
+  image_picker: ^0.8.7+3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
