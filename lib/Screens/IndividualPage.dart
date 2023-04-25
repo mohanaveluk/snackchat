@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../providers/chat_detail.dart';
 import 'package:intl/intl.dart';
 import '../providers/http_exception.dart';
 import '../widgets/chat_detail_widget.dart';
+import 'dart:math' as math;
 
 class IndividualPage extends StatefulWidget {
   const IndividualPage({super.key});
@@ -16,6 +18,9 @@ class IndividualPage extends StatefulWidget {
 class _IndividualPageState extends State<IndividualPage> {
   TextEditingController _newController = TextEditingController();
   FocusNode _existingFocusNode =  FocusNode();
+  ImagePicker _picker = ImagePicker();
+  late XFile file;
+  
   var chatRoom;
   var _isInit = true;
   var _isLoading = false;
@@ -155,15 +160,23 @@ class _IndividualPageState extends State<IndividualPage> {
                       Icons.arrow_back,
                       size: 25,
                     ),
+                    
+                    profilePicUrl != null && profilePicUrl != '' ?
                     CircleAvatar(
                       radius: 22,
                       backgroundColor: Colors.orangeAccent,
-                      backgroundImage: profilePicUrl == null ||
-                              profilePicUrl == ''
-                          ? const NetworkImage(
-                              'https://graph.facebook.com/114021488194584/picture?type=normal')
-                          : NetworkImage(profilePicUrl),
+                      backgroundImage: NetworkImage(profilePicUrl),
                     )
+                    :CircleAvatar(
+                  radius: 22,
+                  backgroundColor:
+                      Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
+                          .withOpacity(1.0),
+                  child: Text(
+                    receiverName!.toString().substring(0, 1),
+                    style: const TextStyle(fontSize: 28, color: Colors.white),
+                  ),
+                ),
                   ],
                 ),
               ),
@@ -233,7 +246,7 @@ class _IndividualPageState extends State<IndividualPage> {
                                     controller: _newController,
                                     focusNode: _existingFocusNode,
                                     textAlignVertical: TextAlignVertical.center,
-                                    keyboardType: TextInputType.text,
+                                    keyboardType: TextInputType.multiline,
                                     textInputAction: TextInputAction.done,
                                     maxLines: 4,
                                     minLines: 1,
@@ -248,6 +261,8 @@ class _IndividualPageState extends State<IndividualPage> {
                                         });
                                       }
                                     },
+                                    cursorHeight: 15,
+                                    cursorColor: Colors.black,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       hintText: "Type a Message",
@@ -337,15 +352,14 @@ class _IndividualPageState extends State<IndividualPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  iconCreation(Icons.insert_drive_file, Colors.pink, "Files"),
-                  SizedBox(
-                    width: 40,
-                  ),
-                  iconCreation(Icons.insert_photo, Colors.green, "Gallery"),
-                  SizedBox(
-                    width: 40,
-                  ),
-                  iconCreation(Icons.audiotrack, Colors.purple, "Audio"),
+                  
+                  iconCreation(
+                    Icons.insert_photo, Colors.green, "Gallery",
+                    () async {
+                      final Xfile = await ImagePicker()
+                      .pickImage(source: ImageSource.gallery);
+                    }),
+                 
                 ],
               ),
             ],
@@ -355,9 +369,10 @@ class _IndividualPageState extends State<IndividualPage> {
     );
   }
 
-  Widget iconCreation(IconData icon, Color color, String text) {
+  Widget iconCreation(
+      IconData icon, Color color, String text, Function onPressed) {
     return InkWell(
-      onTap: () {},
+      onTap: () => onPressed,
       child: Column(
         children: [
           CircleAvatar(

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:snackchat/Model/CountryModel.dart';
 import 'package:snackchat/NewScreen/CountryPage.dart';
 import 'package:snackchat/NewScreen/pagelogin.dart';
+import 'package:snackchat/Screens/loginScreen.dart';
 import 'package:snackchat/components/button.dart';
+import 'package:snackchat/widgets/login_mobile.dart';
 
 import 'userlogin.dart';
 
@@ -54,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
         elevation: 0,
         backgroundColor: Colors.grey.shade200,
         title: const Text(
-          "Snackchat",
+          "SNACK CHAT",
           style: TextStyle(
             color: Colors.orange,
             fontSize: 25,
@@ -74,14 +76,13 @@ class _LoginPageState extends State<LoginPage> {
             child: Form(
               key: _form,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(
-                    height: 20,
+                    height: 30,
                   ),
                   const Text(
                     'Create Account',
-                    textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 25,
                         fontFamily: 'Anton',
@@ -89,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                         fontWeight: FontWeight.w900),
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 30,
                   ),
                   /* textfield(
                  controller: usernameController,
@@ -100,11 +101,13 @@ class _LoginPageState extends State<LoginPage> {
                   TextFormField(
                     decoration: InputDecoration(
                       labelText: "Name",
-                      // enabledBorder: OutlineInputBorder( borderSide: BorderSide(color: Colors.orange.shade700), ),
-                      //focusedBorder: OutlineInputBorder(
-                      // borderSide: BorderSide(
-                      //  color: Colors.white,
-                      // ),),
+                      enabledBorder: OutlineInputBorder( borderSide: BorderSide( width: 3,
+                              color: Color.fromARGB(255, 104, 102, 102)), ),
+                      focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        width: 3,
+                        color: Color.fromARGB(255, 5, 5, 5),
+                       ),),
                       fillColor: Colors.white60,
                       filled: true,
                       hintText: hintText,
@@ -136,14 +139,16 @@ class _LoginPageState extends State<LoginPage> {
                   TextFormField(
                     decoration: InputDecoration(
                       labelText: "Mobile Number",
-                      //enabledBorder: OutlineInputBorder(
-                      // borderSide: BorderSide(color: Colors.orange.shade700),
-                      // ),
-                      //focusedBorder: OutlineInputBorder(
-                      // borderSide: BorderSide(
-                      //  color: Colors.white,
-                      //  ),
-                      //  ),
+                      enabledBorder: OutlineInputBorder(
+                       borderSide: BorderSide( width: 3,
+                              color: Color.fromARGB(255, 104, 102, 102)),
+                       ),
+                      focusedBorder: OutlineInputBorder(
+                       borderSide: BorderSide(
+                        width: 3,
+                        color: Color.fromARGB(255, 5, 5, 5),
+                        ),
+                        ),
                       fillColor: Colors.white60,
                       filled: true,
                       hintText: hintText,
@@ -174,14 +179,17 @@ class _LoginPageState extends State<LoginPage> {
                   TextFormField(
                     decoration: InputDecoration(
                       labelText: "Email",
-                      //  enabledBorder: OutlineInputBorder(
-                      //  borderSide: BorderSide(color: Colors.orange.shade700),
-                      // ),
-                      //  focusedBorder: OutlineInputBorder(
-                      //   borderSide: BorderSide(
-                      //    color: Colors.white,
-                      //  ),
-                      // ),
+                       enabledBorder: OutlineInputBorder(
+                       borderSide: BorderSide(
+                         width: 3,
+                              color: Color.fromARGB(255, 104, 102, 102)),
+                       ),
+                       focusedBorder: OutlineInputBorder(
+                         borderSide: BorderSide(
+                          width: 3,
+                        color: Color.fromARGB(255, 5, 5, 5),
+                        ),
+                       ),
                       fillColor: Colors.white60,
                       filled: true,
                       hintText: hintText,
@@ -214,14 +222,17 @@ class _LoginPageState extends State<LoginPage> {
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: "Password",
-                      //  enabledBorder: OutlineInputBorder(
-                      //   borderSide: BorderSide(color: Colors.orange.shade700),
-                      // ),
-                      // focusedBorder: OutlineInputBorder(
-                      //   borderSide: BorderSide(
-                      //     color: Colors.white,
-                      //  ),
-                      // ),
+                        enabledBorder: OutlineInputBorder(
+                         borderSide: BorderSide(
+                           width: 3,
+                              color: Color.fromARGB(255, 104, 102, 102)),
+                       ),
+                       focusedBorder: OutlineInputBorder(
+                         borderSide: BorderSide(
+                          width: 3,
+                        color: Color.fromARGB(255, 5, 5, 5),
+                        ),
+                       ),
                       fillColor: Colors.white60,
                       filled: true,
                       hintText: hintText,
@@ -238,17 +249,23 @@ class _LoginPageState extends State<LoginPage> {
                     },
                   ),
                   SizedBox(
-                    height: 35,
+                    height: 30,
                   ),
-                  ElevatedButton(
-                      // onPressed: () {
-                      //   await Provider.of<UserAuthentication>(context,
-                      //           listen: false)
-                      //       .userSignIn2(
-                      //           'mohanaveluk@gmail.com', 'welcome@123', context);
-                      // },
-                      onPressed: _saveForm,
-                      child: const Text("Sign In")),
+                 Container(
+                        padding: const EdgeInsets.only(left: 12, top: 5, right: 12, bottom: 5),
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                              backgroundColor: Colors.orange,
+                              fixedSize:  Size.fromHeight(50),
+                              textStyle: const TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                              foregroundColor: Colors.white),
+                          onPressed: ()  {
+                            
+                          },
+                          child: const Text('SIGN UP'),
+                        ), 
+                      ),
                   SizedBox(
                     height: 40,
                   ),
@@ -270,7 +287,7 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const UserLogin()));
+                                  builder: (context) => const LoginScreen()));
                         },
                       )
                     ],

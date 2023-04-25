@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:snackchat/NewScreen/pagelogin.dart';
 import 'package:snackchat/Screens/loginScreen.dart';
 
 import 'LoginPage.dart';
