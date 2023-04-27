@@ -24,7 +24,11 @@ class _LoginPageState extends State<LoginPage> {
   String countryname = "India";
   String countrycode = "+91";
   final _form = GlobalKey<FormState>();
-  var usernameController;
+  var nameController = TextEditingController();
+  var numberController = TextEditingController();
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
+
 
   get height => 90;
 
@@ -43,12 +47,12 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
   }
+  
 
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-    var passwordController;
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       key: _scaffoldKey,
@@ -99,13 +103,14 @@ class _LoginPageState extends State<LoginPage> {
                ),
               */
                   TextFormField(
+                    controller: nameController,
                     decoration: InputDecoration(
                       labelText: "Name",
-                      enabledBorder: OutlineInputBorder( borderSide: BorderSide( width: 3,
+                      border: OutlineInputBorder( borderSide: BorderSide( width: 3,
                               color: Color.fromARGB(255, 104, 102, 102)), ),
                       focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        width: 3,
+                        width: 2,
                         color: Color.fromARGB(255, 5, 5, 5),
                        ),),
                       fillColor: Colors.white60,
@@ -137,15 +142,16 @@ class _LoginPageState extends State<LoginPage> {
         
                 ),*/
                   TextFormField(
+                    controller: numberController,
                     decoration: InputDecoration(
                       labelText: "Mobile Number",
-                      enabledBorder: OutlineInputBorder(
+                      border: OutlineInputBorder(
                        borderSide: BorderSide( width: 3,
                               color: Color.fromARGB(255, 104, 102, 102)),
                        ),
                       focusedBorder: OutlineInputBorder(
                        borderSide: BorderSide(
-                        width: 3,
+                        width: 2,
                         color: Color.fromARGB(255, 5, 5, 5),
                         ),
                         ),
@@ -177,16 +183,17 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 */
                   TextFormField(
+                    controller: emailController,
                     decoration: InputDecoration(
                       labelText: "Email",
-                       enabledBorder: OutlineInputBorder(
+                      border: OutlineInputBorder(
                        borderSide: BorderSide(
                          width: 3,
                               color: Color.fromARGB(255, 104, 102, 102)),
                        ),
                        focusedBorder: OutlineInputBorder(
                          borderSide: BorderSide(
-                          width: 3,
+                          width: 2,
                         color: Color.fromARGB(255, 5, 5, 5),
                         ),
                        ),
@@ -222,14 +229,14 @@ class _LoginPageState extends State<LoginPage> {
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: "Password",
-                        enabledBorder: OutlineInputBorder(
+                        border: OutlineInputBorder(
                          borderSide: BorderSide(
                            width: 3,
-                              color: Color.fromARGB(255, 104, 102, 102)),
+                              color: Color.fromARGB(255, 20, 19, 19)),
                        ),
                        focusedBorder: OutlineInputBorder(
                          borderSide: BorderSide(
-                          width: 3,
+                          width: 2,
                         color: Color.fromARGB(255, 5, 5, 5),
                         ),
                        ),
@@ -251,21 +258,32 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     height: 30,
                   ),
-                 Container(
-                        padding: const EdgeInsets.only(left: 12, top: 5, right: 12, bottom: 5),
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                              backgroundColor: Colors.orange,
-                              fixedSize:  Size.fromHeight(50),
-                              textStyle: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                              foregroundColor: Colors.white),
-                          onPressed: ()  {
-                            
-                          },
-                          child: const Text('SIGN UP'),
-                        ), 
-                      ),
+                 InkWell(
+                  onTap: () {
+                      if (_form.currentState!.validate()) {
+                        print("success");
+                        nameController.clear();
+                        numberController.clear();
+                        emailController.clear();
+                        passwordController.clear();
+                      }
+                    },
+                  child: Container(
+                    
+                    height: 50,
+                    width: 300,
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Text('SIGN UP',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),),
+                    alignment: Alignment.center,
+                  ),
+                 ),
                   SizedBox(
                     height: 40,
                   ),
@@ -303,96 +321,5 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-  Widget CountryCard() {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (builder) =>
-                    CountryPage(setCountryData: setCountryData)));
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width / 1.5,
-        padding: EdgeInsets.symmetric(vertical: 5),
-        decoration: BoxDecoration(
-          border: Border(
-              bottom: BorderSide(
-            color: Colors.orange,
-            width: 1.8,
-          )),
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Container(
-                child: Center(
-                  child: Text(
-                    countryname,
-                    style: TextStyle(
-                      fontSize: 17,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Icon(
-              Icons.arrow_drop_down,
-              color: Colors.orange,
-              size: 28,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget number() {
-    return Container(
-      width: MediaQuery.of(context).size.width / 1.5,
-      height: 38,
-      child: Row(
-        children: [
-          Container(
-            width: 70,
-            decoration: BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(
-                color: Colors.orange,
-                width: 1.8,
-              )),
-            ),
-            child: Row(
-              children: [
-                Text(
-                  "+",
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-                SizedBox(
-                  width: 15,
-                ),
-                Text(
-                  countrycode.substring(1),
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void setCountryData(CountryModel countryModel) {
-    setState(() {
-      countryname = countryModel.name;
-      countrycode = countryModel.code;
-    });
-    Navigator.pop(context);
-  }
 }
+
