@@ -9,6 +9,7 @@ import 'package:snackchat/Screens/loginScreen.dart';
 import 'package:snackchat/providers/chat_detail.dart';
 import 'package:snackchat/providers/chatusers.dart';
 import 'package:snackchat/widgets/login_mobile.dart';
+import 'package:snackchat/widgets/otpPage.dart';
 import 'Screens/IndividualPage.dart';
 import 'providers/auth.dart';
 import 'providers/userAuthentication.dart';
@@ -53,10 +54,10 @@ class MyApp extends StatelessWidget {
                     if (snapshot.data != null && snapshot.data == 'true') {
                       return const ChatOverviewScreen();
                     } else {
-                      return const LandingScreen();
+                      return const otpPage();
                     }
                   } else {
-                    return const LandingScreen();
+                    return const otpPage();
                   }
                 } else {
                   return Center(

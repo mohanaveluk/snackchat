@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:snackchat/NewScreen/userlogin.dart';
 import '../NewScreen/LoginPage.dart';
 import '../providers/http_exception.dart';
 import '../Screens/chat_home_screen.dart';
@@ -24,6 +23,7 @@ class _LoginMobileState extends State<LoginMobile> {
   final _passwordFocusNode = FocusNode();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool passToggle = true;
   Map<String, String> _authData = {'email': '', 'password': ''};
   bool _isLoading = false;
 
@@ -155,10 +155,10 @@ class _LoginMobileState extends State<LoginMobile> {
                         hintStyle:
                             const TextStyle(color: Color.fromARGB(255, 14, 3, 3)),
             
-                        enabledBorder: OutlineInputBorder(
+                        border: OutlineInputBorder(
                           borderSide: const BorderSide(
                               width: 3,
-                              color: Color.fromARGB(255, 104, 102, 102)),
+                              color: Color.fromARGB(255, 18, 16, 16)),
                           borderRadius: BorderRadius.circular(7),
                         ),
                         // Set border for focused state
@@ -194,10 +194,20 @@ class _LoginMobileState extends State<LoginMobile> {
                         labelText: "Password",
                         hintStyle:
                             const TextStyle(color: Color.fromARGB(255, 14, 3, 3)),
-                        enabledBorder: OutlineInputBorder(
+                            suffix: InkWell(
+                              onTap: (){
+                                setState(() {
+                                  passToggle = !passToggle;
+                                });
+                              },
+                              child: Icon(
+                                passToggle ? Icons.visibility : Icons.visibility_off
+                              ),
+                            ),
+                        border: OutlineInputBorder(
                           borderSide: const BorderSide(
                               width: 3,
-                              color: Color.fromARGB(255, 104, 102, 102)),
+                              color: Color.fromARGB(255, 15, 11, 11)),
                           borderRadius: BorderRadius.circular(7),
                         ),
                         // Set border for focused state
