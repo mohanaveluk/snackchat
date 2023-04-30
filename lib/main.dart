@@ -71,6 +71,7 @@ class MyApp extends StatelessWidget {
             ChatOverviewScreen.routeName: (ctx) => ChatOverviewScreen(),
             ChatHome.routeName: (ctx) => ChatHome.fromBase64(auth.token!),
             IndividualPage.routeName: (ctx) => IndividualPage(),
+            OtpPage.routeName: (ctx) => OtpPage(),
           },
         ),
       ),

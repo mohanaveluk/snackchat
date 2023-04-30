@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'dart:async' show Timer;
 
-class otpPage extends StatefulWidget {
-  const otpPage({super.key});
+class OtpPage extends StatefulWidget {
+  const OtpPage({super.key});
+  static const routeName = '/otp_page';
 
   @override
-  State<otpPage> createState() => _otpPageState();
+  State<OtpPage> createState() => _otpPageState();
 }
 
-class _otpPageState extends State<otpPage> {
+class _otpPageState extends State<OtpPage> {
   int _counter = 30;
   late Timer _timer;
+  var _userGuid = '';
+
   @override
   void initState() {
     super.initState();
@@ -31,6 +34,15 @@ class _otpPageState extends State<otpPage> {
         }
       });
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    _userGuid = ModalRoute.of(context)?.settings.arguments as String;
+    print(_userGuid);
+
+    super.didChangeDependencies();
   }
 
   @override
@@ -59,9 +71,8 @@ class _otpPageState extends State<otpPage> {
         ),
         centerTitle: true,
       ),
-      
       body: Card(
-        margin: EdgeInsets.only(top: 100, left: 10,right: 10,bottom: 0),
+        margin: EdgeInsets.only(top: 100, left: 10, right: 10, bottom: 0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -77,7 +88,6 @@ class _otpPageState extends State<otpPage> {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-
               ),
             ),
             SizedBox(height: 30),
@@ -111,7 +121,6 @@ class _otpPageState extends State<otpPage> {
               height: 30,
             ),
             SizedBox(
-
               child: ElevatedButton(
                 onPressed: () {},
                 child: Text(
@@ -123,7 +132,7 @@ class _otpPageState extends State<otpPage> {
             Row(
               children: [
                 Text(
-                  "  Didn't recieve the verification code ? ",
+                  "Didn't recieve the verification code?",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -150,7 +159,7 @@ class _otpPageState extends State<otpPage> {
             Row(
               children: [
                 Text(
-                  '  Request another verification code in $_counter secs',
+                  'Request another verification code in $_counter secs',
                   style: TextStyle(
                       fontSize: 16,
                       color: Colors.black,
