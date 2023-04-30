@@ -100,10 +100,10 @@ class _LoginMobileState extends State<LoginMobile> {
     final deviceSize = MediaQuery.of(context).size;
     final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-    return Container(    
+    return Container(
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(top: 150), 
+          padding: const EdgeInsets.only(top: 150),
           child: Center(
             child: Form(
               key: _form,
@@ -126,9 +126,9 @@ class _LoginMobileState extends State<LoginMobile> {
                         ),
                       ],
                     ),
-    SizedBox(
-      height: 30,
-    ),
+                    SizedBox(
+                      height: 30,
+                    ),
                     Text(
                       'Welcomes you back',
                       style: TextStyle(
@@ -152,20 +152,18 @@ class _LoginMobileState extends State<LoginMobile> {
                       controller: _usernameController,
                       decoration: InputDecoration(
                         labelText: "Email",
-                        hintStyle:
-                            const TextStyle(color: Color.fromARGB(255, 14, 3, 3)),
-            
+                        hintStyle: const TextStyle(
+                            color: Color.fromARGB(255, 14, 3, 3)),
+
                         border: OutlineInputBorder(
                           borderSide: const BorderSide(
-                              width: 3,
-                              color: Color.fromARGB(255, 18, 16, 16)),
+                              width: 3, color: Color.fromARGB(255, 18, 16, 16)),
                           borderRadius: BorderRadius.circular(7),
                         ),
                         // Set border for focused state
                         focusedBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
-                              width: 3,
-                              color: Color.fromARGB(255, 32, 32, 32)),
+                              width: 3, color: Color.fromARGB(255, 32, 32, 32)),
                           borderRadius: BorderRadius.circular(7),
                         ),
                       ),
@@ -192,29 +190,27 @@ class _LoginMobileState extends State<LoginMobile> {
                       obscureText: true,
                       decoration: InputDecoration(
                         labelText: "Password",
-                        hintStyle:
-                            const TextStyle(color: Color.fromARGB(255, 14, 3, 3)),
-                            suffix: InkWell(
-                              onTap: (){
-                                setState(() {
-                                  passToggle = !passToggle;
-                                });
-                              },
-                              child: Icon(
-                                passToggle ? Icons.visibility : Icons.visibility_off
-                              ),
-                            ),
+                        hintStyle: const TextStyle(
+                            color: Color.fromARGB(255, 14, 3, 3)),
+                        suffix: InkWell(
+                          onTap: () {
+                            setState(() {
+                              passToggle = !passToggle;
+                            });
+                          },
+                          child: Icon(passToggle
+                              ? Icons.visibility
+                              : Icons.visibility_off),
+                        ),
                         border: OutlineInputBorder(
                           borderSide: const BorderSide(
-                              width: 3,
-                              color: Color.fromARGB(255, 15, 11, 11)),
+                              width: 3, color: Color.fromARGB(255, 15, 11, 11)),
                           borderRadius: BorderRadius.circular(7),
                         ),
                         // Set border for focused state
                         focusedBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
-                              width: 3,
-                              color: Color.fromARGB(255, 24, 24, 24)),
+                              width: 3, color: Color.fromARGB(255, 24, 24, 24)),
                           borderRadius: BorderRadius.circular(7),
                         ),
                       ),
@@ -231,7 +227,7 @@ class _LoginMobileState extends State<LoginMobile> {
                         if (value.length < 5) {
                           return "Password is too short";
                         }
-            
+
                         return null;
                       },
                       onSaved: (value) {
@@ -243,10 +239,9 @@ class _LoginMobileState extends State<LoginMobile> {
                       Container(
                         padding: EdgeInsets.only(right: 130, left: 130),
                         child: const CircularProgressIndicator(
-                            backgroundColor: Colors.black,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
-                            
-                            ),
+                          backgroundColor: Colors.black,
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                        ),
                       )
                     else
                       Container(
@@ -254,7 +249,7 @@ class _LoginMobileState extends State<LoginMobile> {
                         child: TextButton(
                           style: TextButton.styleFrom(
                               backgroundColor: Colors.orange,
-                              fixedSize:  Size.fromHeight(50),
+                              fixedSize: Size.fromHeight(50),
                               textStyle: const TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                               foregroundColor: Colors.white),
@@ -262,44 +257,43 @@ class _LoginMobileState extends State<LoginMobile> {
                             _submit(context);
                           },
                           child: const Text('LOGIN'),
-                        ), 
-                      ),
-                      const SizedBox(
-                  height: 30,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "    New User ?",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    InkWell(
-                      child: const Text(
-                        "Create an Account.",
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.w700,
                         ),
                       ),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginPage()));
-                      },
-                    )
-                  ],
-                ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "    New User ?",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        InkWell(
+                          child: const Text(
+                            "Create an Account.",
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()));
+                          },
+                        )
+                      ],
+                    ),
                   ],
                 ),
               ),
-              
             ),
           ),
         ),
@@ -363,6 +357,3 @@ class AuthWindow extends StatelessWidget {
     );
   }
 }
-
-
-

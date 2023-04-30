@@ -5,6 +5,8 @@ import 'package:snackchat/NewScreen/pagelogin.dart';
 import 'package:snackchat/Screens/loginScreen.dart';
 import 'package:snackchat/components/button.dart';
 import 'package:snackchat/widgets/login_mobile.dart';
+import 'package:snackchat/widgets/otpPage.dart';
+import '../providers/http_exception.dart';
 
 import 'userlogin.dart';
 
@@ -29,10 +31,10 @@ class _LoginPageState extends State<LoginPage> {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
 
-
   get height => 90;
 
   get hintText => null;
+  bool _isLoading = false;
 
   final _nameFocusNode = FocusNode();
   final _numberFocusNode = FocusNode();
@@ -40,6 +42,22 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordFocusNode = FocusNode();
 
   @override
+  void _showErrorDialog(String message) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: const Text('An error occured'),
+              content: Text(message.replaceAll("HttpException:", "Oops,")),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Ok'))
+              ],
+            ));
+  }
+
   void _saveForm() {
     print('save form');
     final isValid = _form.currentState?.validate();
@@ -47,7 +65,36 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
   }
-  
+
+  Future<void> _submit(context) async {
+    var username = nameController.text;
+    var email = emailController.text;
+    var mobile = numberController.text;
+    var password = passwordController.text;
+    var _userGuid = 'something';
+
+    final isValid = _form.currentState?.validate();
+    if (!isValid!) {
+      return;
+    }
+    _form.currentState!.save();
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      Navigator.of(context).pushNamed(OtpPage.routeName, arguments: _userGuid);
+
+      nameController.clear();
+      numberController.clear();
+      emailController.clear();
+      passwordController.clear();
+    } on HttpException catch (e) {
+      _showErrorDialog(e.message);
+    } catch (e) {
+      _showErrorDialog(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,13 +153,17 @@ class _LoginPageState extends State<LoginPage> {
                     controller: nameController,
                     decoration: InputDecoration(
                       labelText: "Name",
-                      border: OutlineInputBorder( borderSide: BorderSide( width: 3,
-                              color: Color.fromARGB(255, 104, 102, 102)), ),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            width: 3,
+                            color: Color.fromARGB(255, 104, 102, 102)),
+                      ),
                       focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        width: 2,
-                        color: Color.fromARGB(255, 5, 5, 5),
-                       ),),
+                        borderSide: BorderSide(
+                          width: 2,
+                          color: Color.fromARGB(255, 5, 5, 5),
+                        ),
+                      ),
                       fillColor: Colors.white60,
                       filled: true,
                       hintText: hintText,
@@ -146,15 +197,16 @@ class _LoginPageState extends State<LoginPage> {
                     decoration: InputDecoration(
                       labelText: "Mobile Number",
                       border: OutlineInputBorder(
-                       borderSide: BorderSide( width: 3,
-                              color: Color.fromARGB(255, 104, 102, 102)),
-                       ),
+                        borderSide: BorderSide(
+                            width: 3,
+                            color: Color.fromARGB(255, 104, 102, 102)),
+                      ),
                       focusedBorder: OutlineInputBorder(
-                       borderSide: BorderSide(
-                        width: 2,
-                        color: Color.fromARGB(255, 5, 5, 5),
+                        borderSide: BorderSide(
+                          width: 2,
+                          color: Color.fromARGB(255, 5, 5, 5),
                         ),
-                        ),
+                      ),
                       fillColor: Colors.white60,
                       filled: true,
                       hintText: hintText,
@@ -187,16 +239,16 @@ class _LoginPageState extends State<LoginPage> {
                     decoration: InputDecoration(
                       labelText: "Email",
                       border: OutlineInputBorder(
-                       borderSide: BorderSide(
-                         width: 3,
-                              color: Color.fromARGB(255, 104, 102, 102)),
-                       ),
-                       focusedBorder: OutlineInputBorder(
-                         borderSide: BorderSide(
+                        borderSide: BorderSide(
+                            width: 3,
+                            color: Color.fromARGB(255, 104, 102, 102)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
                           width: 2,
-                        color: Color.fromARGB(255, 5, 5, 5),
+                          color: Color.fromARGB(255, 5, 5, 5),
                         ),
-                       ),
+                      ),
                       fillColor: Colors.white60,
                       filled: true,
                       hintText: hintText,
@@ -229,17 +281,16 @@ class _LoginPageState extends State<LoginPage> {
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: "Password",
-                        border: OutlineInputBorder(
-                         borderSide: BorderSide(
-                           width: 3,
-                              color: Color.fromARGB(255, 20, 19, 19)),
-                       ),
-                       focusedBorder: OutlineInputBorder(
-                         borderSide: BorderSide(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            width: 3, color: Color.fromARGB(255, 20, 19, 19)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
                           width: 2,
-                        color: Color.fromARGB(255, 5, 5, 5),
+                          color: Color.fromARGB(255, 5, 5, 5),
                         ),
-                       ),
+                      ),
                       fillColor: Colors.white60,
                       filled: true,
                       hintText: hintText,
@@ -258,32 +309,27 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     height: 30,
                   ),
-                 InkWell(
-                  onTap: () {
-                      if (_form.currentState!.validate()) {
-                        print("success");
-                        nameController.clear();
-                        numberController.clear();
-                        emailController.clear();
-                        passwordController.clear();
-                      }
+                  InkWell(
+                    onTap: () async {
+                      _submit(context);
                     },
-                  child: Container(
-                    
-                    height: 50,
-                    width: 300,
-                    decoration: BoxDecoration(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.circular(5),
+                    child: Container(
+                      height: 50,
+                      width: 300,
+                      decoration: BoxDecoration(
+                        color: Colors.orange,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Text(
+                        'SIGN UP',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      alignment: Alignment.center,
                     ),
-                    child: Text('SIGN UP',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),),
-                    alignment: Alignment.center,
                   ),
-                 ),
                   SizedBox(
                     height: 40,
                   ),
@@ -322,4 +368,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
