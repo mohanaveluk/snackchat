@@ -54,10 +54,10 @@ class MyApp extends StatelessWidget {
                     if (snapshot.data != null && snapshot.data == 'true') {
                       return const ChatOverviewScreen();
                     } else {
-                      return const otpPage();
+                      return const LandingScreen();
                     }
                   } else {
-                    return const otpPage();
+                    return const LandingScreen();
                   }
                 } else {
                   return Center(

@@ -48,7 +48,7 @@ class _otpPageState extends State<otpPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-        elevation: 3,
+        elevation: 8,
         title: Text(
           "SIGN UP",
           style: TextStyle(
