@@ -54,10 +54,10 @@ class MyApp extends StatelessWidget {
                     if (snapshot.data != null && snapshot.data == 'true') {
                       return const ChatOverviewScreen();
                     } else {
-                      return const otpPage();
+                      return const LandingScreen();
                     }
                   } else {
-                    return const otpPage();
+                    return const LandingScreen();
                   }
                 } else {
                   return Center(
@@ -71,6 +71,7 @@ class MyApp extends StatelessWidget {
             ChatOverviewScreen.routeName: (ctx) => ChatOverviewScreen(),
             ChatHome.routeName: (ctx) => ChatHome.fromBase64(auth.token!),
             IndividualPage.routeName: (ctx) => IndividualPage(),
+            OtpPage.routeName: (ctx) => OtpPage(),
           },
         ),
       ),
