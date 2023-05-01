@@ -9,13 +9,12 @@ class userAccount with ChangeNotifier {
   String? token = '';
   String? refreshToken = '';
 
-  userAccount({
-    required this.status, 
-    required this.message, 
-    required this.user, 
-    required this.token, 
-    required this.refreshToken
-  });
+  userAccount(
+      {required this.status,
+      required this.message,
+      required this.user,
+      required this.token,
+      required this.refreshToken});
 
 /*
   user_auth.fromJson(Map<String, dynamic> json) {
@@ -38,9 +37,7 @@ class userAccount with ChangeNotifier {
     return data;
   }
 */
-
 }
-
 
 class User {
   int? userId;
@@ -52,12 +49,12 @@ class User {
   String? address1;
   String? address2;
   String? city;
-  Null? stateId;
-  Null? stateCode;
-  Null? stateName;
-  Null? countryId;
-  Null? countryCode;
-  Null? countryName;
+  int? stateId;
+  int? stateCode;
+  int? stateName;
+  int? countryId;
+  int? countryCode;
+  String? countryName;
   String? profilePicUrl;
   int? isMobileVerified;
   int? isEmailVerified;
@@ -99,6 +96,4 @@ class User {
       this.supplierGuid,
       this.supplierName,
       this.guid});
-
-
 }

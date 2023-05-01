@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'dart:async' show Timer;
+import '../Screens/chat_home_screen.dart';
+import '../providers/createAccount.dart';
+import '../providers/http_exception.dart';
 
 class OtpPage extends StatefulWidget {
   const OtpPage({super.key});
@@ -14,11 +19,32 @@ class _otpPageState extends State<OtpPage> {
   int _counter = 30;
   late Timer _timer;
   var _userGuid = '';
+  var _verification_message = '';
+  bool _isLoading = false;
+
+  final TextEditingController _codeController = TextEditingController();
+  final _codeFocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
     _timer = Timer(Duration(seconds: 0), () => {});
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: const Text('An error occured'),
+              content: Text(message.replaceAll("HttpException:", "Oops,")),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Ok'))
+              ],
+            ));
   }
 
   void _startTimer() {
@@ -38,17 +64,48 @@ class _otpPageState extends State<OtpPage> {
           _timer.cancel();
         }
       });
-      
     });
   }
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
-    _userGuid = ModalRoute.of(context)?.settings.arguments as String;
-    print(_userGuid);
+    var userModel = ModalRoute.of(context)?.settings.arguments as Map;
+    _verification_message = userModel['v_message'];
+    _userGuid = userModel['guid'];
+
+    _startTimer();
 
     super.didChangeDependencies();
+  }
+
+  Future<void> _submit(context) async {
+    var _code = _codeController.text;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      var token = await Provider.of<CreateAccount>(context, listen: false)
+          .submitVerifictionCode(_userGuid, _code);
+
+      if (token != '') {
+        // ignore: use_build_context_synchronously
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ChatHome.fromBase64(token)));
+      }
+    } on HttpException catch (e) {
+      _showErrorDialog(e.message);
+    } catch (e) {
+      _showErrorDialog(e.toString());
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -67,7 +124,7 @@ class _otpPageState extends State<OtpPage> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         elevation: 8,
-        title: Text(
+        title: const Text(
           "SIGN UP",
           style: TextStyle(
             fontSize: 25,
@@ -82,22 +139,16 @@ class _otpPageState extends State<OtpPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            const Text(
-              'Verification code has been sent to your',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
             Text(
-              "mobile: ******5399",
-              style: TextStyle(
+              _verification_message,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(height: 30),
             TextFormField(
+              controller: _codeController,
               decoration: const InputDecoration(
                 contentPadding: EdgeInsets.all(20),
                 labelText: "Verification code",
@@ -116,6 +167,7 @@ class _otpPageState extends State<OtpPage> {
               ),
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.number,
+              focusNode: _codeFocusNode,
               validator: (value) {
                 if (value!.isEmpty) {
                   return "Please provide a value.";
@@ -126,14 +178,30 @@ class _otpPageState extends State<OtpPage> {
             SizedBox(
               height: 30,
             ),
-            SizedBox(
-              child: ElevatedButton(
-                onPressed: () {},
-                child: Text(
-                  "Verify OTP",
+            if (_isLoading)
+              Container(
+                padding: EdgeInsets.only(right: 130, left: 130),
+                child: const CircularProgressIndicator(
+                  backgroundColor: Colors.black,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                ),
+              )
+            else
+              Container(
+                padding: const EdgeInsets.fromLTRB(12, 5, 12, 5),
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                      backgroundColor: Colors.orange,
+                      fixedSize: Size.fromHeight(50),
+                      textStyle: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
+                      foregroundColor: Colors.white),
+                  onPressed: () async {
+                    _submit(context);
+                  },
+                  child: const Text('Verify Code'),
                 ),
               ),
-            ),
             SizedBox(height: 40),
             Row(
               children: [
@@ -149,7 +217,6 @@ class _otpPageState extends State<OtpPage> {
                   child: TextButton(
                     onPressed: () {
                       _startTimer();
-                      
                     },
                     child: Text(
                       'Resend OTP',

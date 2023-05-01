@@ -174,8 +174,10 @@ class _LoginMobileState extends State<LoginMobile> {
                         FocusScope.of(context).requestFocus(_passwordFocusNode);
                       },
                       validator: (value) {
-                        if (value!.isEmpty ||
-                            (!value.contains('@') && !value.contains('.'))) {
+                        if (value!.isEmpty) {
+                          return "Please procide a value";
+                        } else if ((!value.contains('@') &&
+                            !value.contains('.'))) {
                           return "Invalid email";
                         }
                         return null;

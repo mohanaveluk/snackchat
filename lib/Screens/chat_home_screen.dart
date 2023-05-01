@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:provider/provider.dart';
+import '../NewScreen/LandingScreen.dart';
+import '../providers/http_exception.dart';
 
 import 'package:flutter/material.dart';
 import '../providers/chatusers.dart';
@@ -16,7 +18,7 @@ class ChatHome extends StatefulWidget {
 
   final String jwt;
   final Map<String, dynamic> payload;
-  
+
   @override
   State<ChatHome> createState() => _ChatHomeState();
 }
@@ -24,6 +26,22 @@ class ChatHome extends StatefulWidget {
 class _ChatHomeState extends State<ChatHome> {
   var _isInit = true;
   var _isLoading = false;
+
+  void _showErrorDialog(String message) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: const Text('An error occured'),
+              content: Text(message.replaceAll("HttpException:", "Oops,")),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Ok'))
+              ],
+            ));
+  }
 
   @override
   void initState() {
@@ -37,8 +55,15 @@ class _ChatHomeState extends State<ChatHome> {
       setState(() {
         _isLoading = true;
       });
-      await Provider.of<ChatUsers>(context, listen: false)
-          .fetchChatUsersToken(widget.jwt);
+      try {
+        await Provider.of<ChatUsers>(context, listen: false)
+            .fetchChatUsersToken(widget.jwt);
+      } on HttpException catch (e) {
+        _showErrorDialog(e.message);
+      } catch (e) {
+        _showErrorDialog(e.toString());
+      }
+
       setState(() {
         _isLoading = false;
       });
@@ -50,16 +75,20 @@ class _ChatHomeState extends State<ChatHome> {
     final chatUsers = Provider.of<ChatUsers>(context);
     final rooms = chatUsers.rooms;
 
-    
     return Scaffold(
       appBar: AppBar(
         title: Text("SnackChat"),
         automaticallyImplyLeading: false,
         actions: [
-          PopupMenuButton<String>(itemBuilder:(BuildContext context){
-            return[
-              const PopupMenuItem(child: Text("Log out"))
-            ];
+          PopupMenuButton<String>(onSelected: (value) {
+            if (value == '1') {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const LandingScreen()));
+            }
+          }, itemBuilder: (BuildContext context) {
+            return [const PopupMenuItem(value: '1', child: Text("Log out"))];
           }),
         ],
       ),
@@ -70,10 +99,6 @@ class _ChatHomeState extends State<ChatHome> {
           : ListView.builder(
               itemCount: rooms.length,
               itemBuilder: (ctx, i) => ChatItem(rooms[i])),
-              
-
-              
     );
-  
   }
 }

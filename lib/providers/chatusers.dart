@@ -17,15 +17,23 @@ class ChatUsers with ChangeNotifier {
   }
 
   Future<void> fetchChatUsersToken(String aToken) async {
+    _chatRoom = [];
     final headers = {"Content-Type": "application/json"};
 
     final encoding = Encoding.getByName('utf-8');
     final userPref = await SharedPreferences.getInstance();
     var userData = userPref.getString('userData');
     final parseduserData = json.decode(userData!);
-    final userId = parseduserData['userInfo']['user_id'];
-    final firstName = parseduserData['userInfo']['first_name'];
-    final lastName = parseduserData['userInfo']['last_name'];
+    var userId = parseduserData['userInfo']['user_id'];
+    var firstName = parseduserData['userInfo']['first_name'];
+    var lastName = parseduserData['userInfo']['last_name'];
+
+    if (userId == null) {
+      final parseduserInfo = json.decode(parseduserData['userInfo']);
+      userId = parseduserInfo['user_id'];
+      firstName = parseduserInfo['first_name'];
+      lastName = parseduserInfo['last_name'];
+    }
     final apiUrl = Uri.parse(
         'https://api.axelmart.com/api/v1/chat/chatlist?userid=${userId}&reload=1');
 
