@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snackchat/Model/CountryModel.dart';
@@ -23,6 +25,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+ int _counter = 30;
+  late Timer _timer;
+
+  
+
+  
+
   final formKey = GlobalKey<FormState>();
   String name = "";
   String countryname = "India";
@@ -69,6 +79,9 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
   }
+
+  final RegExp _phoneNumberRegExp = RegExp(r'^[0-9]{10}$');
+
 
   Future<void> _submit(context) async {
     var userFirstName = firstNameController.text;
@@ -272,9 +285,11 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Please provide a value.";
-                      }
-                      return null;
+    return 'Please enter a phone number';
+  } else if (!_phoneNumberRegExp.hasMatch(value!)) {
+    return 'Please enter a valid 10-digit phone number';
+  }
+  return null;
                     },
                   ),
                   SizedBox(
@@ -313,10 +328,12 @@ class _LoginPageState extends State<LoginPage> {
                       FocusScope.of(context).requestFocus(_passwordFocusNode);
                     },
                     validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Please provide a value.";
-                      }
-                      return null;
+                      if (value!.isEmpty ||
+                            (!value.contains('@') && !value.contains('.'))) {
+                          return "Invalid email";
+                        }
+                        return null;
+                        
                     },
                   ),
                   SizedBox(
@@ -363,6 +380,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   InkWell(
                     onTap: () async {
+                      _startTimer();
                       _submit(context);
                     },
                     child: Container(
@@ -404,6 +422,8 @@ class _LoginPageState extends State<LoginPage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => const LoginScreen()));
+                                                        
+
                         },
                       )
                     ],
@@ -420,3 +440,8 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+
+class _startTimer {
+
+}
+
