@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:snackchat/Model/CountryModel.dart';
 import 'package:snackchat/NewScreen/CountryPage.dart';
 import 'package:snackchat/NewScreen/pagelogin.dart';
 import 'package:snackchat/Screens/loginScreen.dart';
 import 'package:snackchat/components/button.dart';
+import 'package:snackchat/providers/createAccount.dart';
 import 'package:snackchat/widgets/login_mobile.dart';
 import 'package:snackchat/widgets/otpPage.dart';
 import '../providers/http_exception.dart';
@@ -26,7 +28,8 @@ class _LoginPageState extends State<LoginPage> {
   String countryname = "India";
   String countrycode = "+91";
   final _form = GlobalKey<FormState>();
-  var nameController = TextEditingController();
+  var firstNameController = TextEditingController();
+  var lastNameController = TextEditingController();
   var numberController = TextEditingController();
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
@@ -36,7 +39,8 @@ class _LoginPageState extends State<LoginPage> {
   get hintText => null;
   bool _isLoading = false;
 
-  final _nameFocusNode = FocusNode();
+  final _firstNameFocusNode = FocusNode();
+  final _lastNameFocusNode = FocusNode();
   final _numberFocusNode = FocusNode();
   final _emailFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
@@ -67,7 +71,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _submit(context) async {
-    var username = nameController.text;
+    var userFirstName = firstNameController.text;
+    var userLastName = lastNameController.text;
     var email = emailController.text;
     var mobile = numberController.text;
     var password = passwordController.text;
@@ -83,9 +88,15 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     try {
+      var registrationResponse =
+          await Provider.of<CreateAccount>(context, listen: false)
+              .createUserAccount(
+                  userFirstName, userLastName, email, mobile, password);
+
       Navigator.of(context).pushNamed(OtpPage.routeName, arguments: _userGuid);
 
-      nameController.clear();
+      firstNameController.clear();
+      lastNameController.clear();
       numberController.clear();
       emailController.clear();
       passwordController.clear();
@@ -94,6 +105,10 @@ class _LoginPageState extends State<LoginPage> {
     } catch (e) {
       _showErrorDialog(e.toString());
     }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -150,9 +165,9 @@ class _LoginPageState extends State<LoginPage> {
                ),
               */
                   TextFormField(
-                    controller: nameController,
+                    controller: firstNameController,
                     decoration: InputDecoration(
-                      labelText: "Name",
+                      labelText: "First name",
                       border: OutlineInputBorder(
                         borderSide: BorderSide(
                             width: 3,
@@ -172,7 +187,44 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.name,
-                    focusNode: _nameFocusNode,
+                    focusNode: _firstNameFocusNode,
+                    onFieldSubmitted: (_) {
+                      FocusScope.of(context).requestFocus(_numberFocusNode);
+                    },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Please provide a value.";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    controller: lastNameController,
+                    decoration: InputDecoration(
+                      labelText: "Last name",
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            width: 3,
+                            color: Color.fromARGB(255, 104, 102, 102)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          width: 2,
+                          color: Color.fromARGB(255, 5, 5, 5),
+                        ),
+                      ),
+                      fillColor: Colors.white60,
+                      filled: true,
+                      hintText: hintText,
+                      hintStyle:
+                          TextStyle(color: Color.fromARGB(255, 14, 3, 3)),
+                    ),
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.name,
+                    focusNode: _lastNameFocusNode,
                     onFieldSubmitted: (_) {
                       FocusScope.of(context).requestFocus(_numberFocusNode);
                     },

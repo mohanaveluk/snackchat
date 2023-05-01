@@ -26,9 +26,7 @@ class LandingScreen extends StatelessWidget {
                 color: Colors.orange[800],
               ),
             ),
-            SizedBox(
-              height: 60
-            ),
+            SizedBox(height: 60),
             Image.asset(
               "assets/images/loglogo.png",
               color: Colors.orange[800],
