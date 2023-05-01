@@ -10,6 +10,7 @@ class OtpPage extends StatefulWidget {
 }
 
 class _otpPageState extends State<OtpPage> {
+  bool _isResendButtonDisabled = false;
   int _counter = 30;
   late Timer _timer;
   var _userGuid = '';
@@ -25,14 +26,19 @@ class _otpPageState extends State<OtpPage> {
     if (_timer != null) {
       _timer.cancel();
     }
+    setState(() {
+      _isResendButtonDisabled = true;
+    });
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
         if (_counter > 0) {
           _counter--;
         } else {
+          _isResendButtonDisabled = false;
           _timer.cancel();
         }
       });
+      
     });
   }
 
@@ -143,6 +149,7 @@ class _otpPageState extends State<OtpPage> {
                   child: TextButton(
                     onPressed: () {
                       _startTimer();
+                      
                     },
                     child: Text(
                       'Resend OTP',
