@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,9 +8,10 @@ import 'package:snackchat/NewScreen/CountryPage.dart';
 import 'package:snackchat/NewScreen/pagelogin.dart';
 import 'package:snackchat/Screens/loginScreen.dart';
 import 'package:snackchat/components/button.dart';
-import 'package:snackchat/providers/createAccount.dart';
+
 import 'package:snackchat/widgets/login_mobile.dart';
 import 'package:snackchat/widgets/otpPage.dart';
+import '../providers/createAccount.dart';
 import '../providers/http_exception.dart';
 
 import 'userlogin.dart';
@@ -25,13 +27,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
- int _counter = 30;
+  int _counter = 30;
   late Timer _timer;
-
-  
-
-  
 
   final formKey = GlobalKey<FormState>();
   String name = "";
@@ -80,8 +77,10 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  final RegExp _phoneNumberRegExp = RegExp(r'^[0-9]{10}$');
-
+  //final RegExp _phoneNumberRegExp = RegExp(r'^\+[1-9]{1}[0-9]{3,14}$');
+  final RegExp _phoneNumberRegExp = RegExp(r'^(\+|\d)[0-9]{7,16}$');
+  final RegExp _emailRegExp = RegExp(
+      r"^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$");
 
   Future<void> _submit(context) async {
     var userFirstName = firstNameController.text;
@@ -105,9 +104,17 @@ class _LoginPageState extends State<LoginPage> {
           await Provider.of<CreateAccount>(context, listen: false)
               .createUserAccount(
                   userFirstName, userLastName, email, mobile, password);
-
-      Navigator.of(context).pushNamed(OtpPage.routeName, arguments: _userGuid);
-
+      //var userObj = json.decode(registrationResponse);
+      if (registrationResponse['user_guid'] != '' &&
+          registrationResponse['user_guid'] != null) {
+        _userGuid = registrationResponse['user_guid'];
+        Navigator.of(context).pushNamed(OtpPage.routeName, arguments: {
+          "guid": _userGuid,
+          "v_message": registrationResponse['verification_message']
+        });
+      } else {
+        _showErrorDialog(registrationResponse['message']);
+      }
       firstNameController.clear();
       lastNameController.clear();
       numberController.clear();
@@ -158,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(
-                    height: 30,
+                    height: 20,
                   ),
                   const Text(
                     'Create Account',
@@ -169,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                         fontWeight: FontWeight.w900),
                   ),
                   const SizedBox(
-                    height: 30,
+                    height: 20,
                   ),
                   /* textfield(
                  controller: usernameController,
@@ -212,7 +219,7 @@ class _LoginPageState extends State<LoginPage> {
                     },
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 15,
                   ),
                   TextFormField(
                     controller: lastNameController,
@@ -249,7 +256,7 @@ class _LoginPageState extends State<LoginPage> {
                     },
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 15,
                   ),
                   /*textfield(
                   controller: usernameController,
@@ -285,15 +292,15 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     validator: (value) {
                       if (value!.isEmpty) {
-    return 'Please enter a phone number';
-  } else if (!_phoneNumberRegExp.hasMatch(value!)) {
-    return 'Please enter a valid 10-digit phone number';
-  }
-  return null;
+                        return 'Please enter a phone number';
+                      } else if (!_phoneNumberRegExp.hasMatch(value!)) {
+                        return 'Please enter a valid 10-digit phone number';
+                      }
+                      return null;
                     },
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 15,
                   ),
                   /* textfield(
                   controller: usernameController,
@@ -328,16 +335,16 @@ class _LoginPageState extends State<LoginPage> {
                       FocusScope.of(context).requestFocus(_passwordFocusNode);
                     },
                     validator: (value) {
-                      if (value!.isEmpty ||
-                            (!value.contains('@') && !value.contains('.'))) {
-                          return "Invalid email";
-                        }
-                        return null;
-                        
+                      if (value!.isEmpty) {
+                        return "Please provide a value";
+                      } else if (!_emailRegExp.hasMatch(value)) {
+                        return 'Please enter a valid email';
+                      }
+                      return null;
                     },
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 15,
                   ),
                   /*textfield(
                   controller: passwordController,
@@ -401,7 +408,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   SizedBox(
-                    height: 40,
+                    height: 30,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -422,14 +429,9 @@ class _LoginPageState extends State<LoginPage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => const LoginScreen()));
-                                                        
-
                         },
                       )
                     ],
-                  ),
-                  SizedBox(
-                    height: 40,
                   ),
                 ],
               ),
@@ -441,7 +443,4 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-class _startTimer {
-
-}
-
+class _startTimer {}

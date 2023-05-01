@@ -5,13 +5,12 @@ import 'package:snackchat/Screens/ChatScreen.dart';
 import 'package:snackchat/Screens/chat_home_screen.dart';
 import 'package:snackchat/Screens/customers.dart';
 import 'package:snackchat/Screens/chat_overview_screen.dart';
-import 'package:snackchat/Screens/loginScreen.dart';
 import 'package:snackchat/providers/chat_detail.dart';
 import 'package:snackchat/providers/chatusers.dart';
-import 'package:snackchat/widgets/login_mobile.dart';
 import 'package:snackchat/widgets/otpPage.dart';
 import 'Screens/IndividualPage.dart';
 import 'providers/auth.dart';
+import 'providers/createAccount.dart';
 import 'providers/userAuthentication.dart';
 
 void main() {
@@ -26,6 +25,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: UserAuthentication()),
+        ChangeNotifierProvider.value(value: CreateAccount()),
         ChangeNotifierProvider.value(value: Auth()),
         ChangeNotifierProxyProvider<UserAuthentication, ChatUsers>(
           update: (ctx, auth, previousUsers) => ChatUsers(auth.token ?? '',
